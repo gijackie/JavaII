@@ -1,0 +1,64 @@
+public class Rotate {
+
+	// Look up ROT13
+	public static void main(String... args) {
+		Rotate r1 = new Rotate();
+		int numArgs = args.length;
+
+		// this program requires at least two arguments on the command line
+		if (numArgs < 2 || numArgs > 2) {
+			System.out
+					.println("This program requires two command-line arguments.");
+		} else {
+
+			System.out.println(r1.rotatePair(args[0], args[1]));
+		}
+
+	}
+
+	public boolean rotatePair(String word1, String word2) {
+		boolean rp = false;
+		StringBuilder sb1 = new StringBuilder();
+		sb1.append(word1);
+		StringBuilder sb2 = new StringBuilder();
+		sb2.append(word2);
+
+		if (sb1.length() == sb2.length()) {
+			System.out.println("the lengths are the same");
+			if (!sb1.equals(sb2)) {
+				
+				for(int i = 0; i < sb1.length(); i++){
+					if(sb1.toString().contains(sb1.charAt(i))){
+						
+					}
+					
+				}
+				if (sb1.charAt(0) == sb2.charAt(sb1.length() - 1) || sb2.charAt(0) == sb1.charAt(sb1.length() - 1)) {
+					System.out.println("the first character of sb1 = the last character of sb2");
+					
+/*						int ii = 0;
+						for (int i = 1; i < sb1.length(); i++) {
+
+							System.out.println("i = " + i + " ii = " + ii);
+							if (sb1.charAt(i) == sb2.charAt(ii)) {
+								System.out.println(sb1.charAt(i) + " = "
+										+ sb2.charAt(sb1.length() - 1));
+
+								rp = true;
+								ii--;
+							} else {
+								System.out.println(sb1.charAt(i) + " = "
+										+ sb2.charAt(sb1.length() - 1));
+
+								return rp;
+							}
+						}*/
+					}
+				
+			}
+
+		}
+
+		return rp;
+	}
+}
