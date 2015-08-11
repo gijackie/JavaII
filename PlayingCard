@@ -1,0 +1,25 @@
+
+import java.util.Comparator;
+import java.util.*;
+
+public class PlayingCard implements Comparable <PlayingCard>{
+    
+	public VALIDSUITS suit;  // this card rank
+	public VALIDRANKS rank;  // this card suit
+	
+	public PlayingCard() {
+		System.out.println("Must assign suit and rank to create PlayingCard");
+	}
+
+	public PlayingCard(VALIDSUITS suit_value, VALIDRANKS rank_value) {
+		this.suit = suit_value;
+		this.rank = rank_value;
+	}
+
+	@Override
+	public int compareTo(PlayingCard o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+}
