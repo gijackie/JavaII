@@ -1,6 +1,6 @@
 
-import java.util.Comparator;
 import java.util.*;
+
 
 public class PlayingCard implements Comparable <PlayingCard>{
     
@@ -19,7 +19,24 @@ public class PlayingCard implements Comparable <PlayingCard>{
 	@Override
 	public int compareTo(PlayingCard o) {
 		// TODO Auto-generated method stub
-		return 0;
+		//System.out.println("Inside PlayingCard.compareTo.");
+		return -1;
 	}
+
+
+/*	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}*/
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		String something = "The hand.card is now " + rank + " of " + suit;
+		return something;
+	}
+
+
 	
 }
