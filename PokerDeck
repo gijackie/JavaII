@@ -9,12 +9,14 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-
 public class PokerDeck {
 
 	private List<PlayingCard> deck;
 	private Map<HAND_TYPE, Integer> results;
 	private Set<PlayingCard> hand;
+	private int flushes = 0;
+	private int fourofkinds = 0;
+	private int fullhouses = 0;
 
 	public PokerDeck() {
 		deck = new ArrayList<PlayingCard>();
@@ -35,12 +37,17 @@ public class PokerDeck {
 	public static void main(String... args) {
 		PokerDeck pd1 = new PokerDeck();
 		// Change i<1 to i<100000
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 100001; i++) {
 			pd1.deal();
-			
 		}
 		
-
+		pd1.results.put(HAND_TYPE.FLUSH, pd1.flushes);
+		pd1.results.put(HAND_TYPE.FOUR_OF_A_KIND, pd1.fourofkinds);
+		pd1.results.put(HAND_TYPE.FULL_HOUSE, pd1.fullhouses);
+		
+		System.out.printf("%s occurrences:", pd1.results.get(HAND_TYPE.FLUSH)+" Flush ");
+		System.out.printf("\n%s occurrences:", pd1.results.get(HAND_TYPE.FOUR_OF_A_KIND) + " Four of A Kind ");
+		System.out.printf("\n%s occurrences:", pd1.results.get(HAND_TYPE.FULL_HOUSE) + " Full House ");
 	}
 
 	public void printDeckUsingIterator(List<PlayingCard> deckq) {
@@ -56,7 +63,7 @@ public class PokerDeck {
 		int deckSize = newDeck.size();
 
 		Random rand = new Random();
-		
+
 		for (int i = 0; i < 51; i++) {
 			int index1 = rand.nextInt(deckSize);
 			int index2 = rand.nextInt(deckSize);
@@ -76,20 +83,118 @@ public class PokerDeck {
 		deck = shuffle(deck);
 		for (int i = 0; i < 5; i++) {
 			card = deck.get(i);
-			 hand.add(card);
-			 //System.out.println(hand.add(card));
-			 /*System.out.println( hand);
-			//System.out.println(card.rank + " of " + card.suit);
-			System.out.println("*******************************");*/
+			hand.add(card);
+
 		}
-		
-		System.out.println("The size of the hand is: "+ hand.size());
-		
+		rank_hand(hand);
+
 		return retVal;
 	}
 
-	public Integer rank_hand() {
-		Integer retVal = 0;
+	public HAND_TYPE rank_hand(Set<PlayingCard> hand1) {
+		// System.out.println("Got inside the rank_hand");
+		HAND_TYPE retVal = null;
+		VALIDSUITS s1 = null;
+
+		Iterator<PlayingCard> iter = hand1.iterator();
+
+		// ***Flush
+
+		int matches = 0;
+		int ct1 = 0;
+		while (iter.hasNext() && ct1 < 5) {
+			if (s1 != null) {
+				// System.out.println("s1 = " + s1);
+				if (s1 == (iter.next().suit)) {
+					matches++;
+				}
+
+			} else {
+				s1 = iter.next().suit;
+				// System.out.println("Set s1 to " + s1);
+			}
+
+		}
+		if (matches == 4) {
+			retVal = HAND_TYPE.FLUSH;
+			flushes++;
+			return retVal;
+		} else {
+			//System.out.println("there were " + matches + " Flush matches");
+
+		}
+
+		// ***Four of A Kind
+		Iterator<PlayingCard> iter1 = hand1.iterator();
+		VALIDRANKS r1 = null;
+		VALIDRANKS r2 = null;
+		int c1 = 0;
+		int c2 = 0;
+		int ct = 0;
+		while (iter1.hasNext() && ct < 5) {
+			VALIDRANKS temp = iter1.next().rank;
+			if (r1 == null) {
+				r1 = temp;
+				// System.out.println("Setting r1 to " + r1);
+			} else {
+				if (r1 == temp) {
+					c1++;
+				} else {
+					if (r2 == null) {
+						r2 = temp;
+					} else {
+						if (r2 == temp) {
+							c2++;
+						}
+					}
+				}
+
+			}
+			// System.out.println("r1 = " + r1 + " and r2 = " + r2 + " and the
+			// current rank is " + temp);
+			ct++;
+		}
+		if (ct > 4 && ((c1 == 3 || c2 == 3))) {
+			retVal = HAND_TYPE.FOUR_OF_A_KIND;
+			fourofkinds++;
+			return retVal;
+		}
+		
+		// ***Full House
+		Iterator<PlayingCard> iter2 = hand1.iterator();
+		VALIDRANKS r11 = null;
+		VALIDRANKS r22 = null;
+		int c11 = 0;
+		int c22 = 0;
+		int ctf = 0;
+		while (iter2.hasNext() && ctf < 5) {
+			VALIDRANKS temp = iter2.next().rank;
+			if (r11 == null) {
+				r11 = temp;
+				// System.out.println("Setting r1 to " + r1);
+			} else {
+				if (r11 == temp) {
+					c11++;
+				} else {
+					if (r22 == null) {
+						r22 = temp;
+					} else {
+						if (r22 == temp) {
+							c22++;
+						}
+					}
+				}
+
+			}
+			// System.out.println("r1 = " + r1 + " and r2 = " + r2 + " and the
+			// current rank is " + temp);
+			ctf++;
+		}
+		if (ctf > 4 && ((c11 == 2 && c22 == 1) ||( c22 == 2 && c11 == 1 ))) {
+			retVal = HAND_TYPE.FULL_HOUSE;
+			fullhouses++;
+			return retVal;
+		}
 
 		return retVal;
 	}
@@ -110,6 +215,5 @@ public class PokerDeck {
 		// TODO Auto-generated method stub
 		return super.hashCode();
 	}
-
 
 }
